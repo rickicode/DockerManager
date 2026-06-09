@@ -279,50 +279,31 @@ async function loadContainers() {
         // Mobile cards
         if (mobileDiv) {
             mobileDiv.innerHTML = containers.map(c => `
-                <div class="container-card">
-                    <div class="container-card-header">
-                        <div class="container-card-name">${escapeHtml(c.name)}</div>
-                        <span class="status-badge ${c.state}">${c.state}</span>
-                    </div>
-                    <div class="container-card-body">
-                        <div class="container-card-row">
-                            <span class="container-card-label">Image</span>
-                            <span class="container-card-value">${escapeHtml(c.image)}</span>
+                <div class="m-card">
+                    <div class="m-card-top">
+                        <div class="m-card-dot ${c.state}"></div>
+                        <div class="m-card-info">
+                            <div class="m-card-name">${escapeHtml(c.name)}</div>
+                            <div class="m-card-image">${escapeHtml(c.image)}</div>
                         </div>
-                        ${c.ports && c.ports.length > 0 ? `
-                        <div class="container-card-row">
-                            <span class="container-card-label">Ports</span>
-                            <span class="container-card-value">${formatPorts(c.ports)}</span>
-                        </div>` : ''}
-                        <div class="container-card-row">
-                            <span class="container-card-label">Created</span>
-                            <span class="container-card-value">${formatDate(c.created)}</span>
+                        <div class="m-card-meta">
+                            <span class="m-card-time">${formatDate(c.created)}</span>
                         </div>
                     </div>
-                    <div class="container-card-actions">
+                    ${c.ports && c.ports.length > 0 ? `
+                    <div class="m-card-ports">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        <span>${formatPorts(c.ports)}</span>
+                    </div>` : ''}
+                    <div class="m-card-actions">
                         ${c.state === 'running' ? `
-                            <button class="btn btn-secondary" onclick="stopContainer('${c.id}')">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-                                Stop
-                            </button>
-                            <button class="btn btn-secondary" onclick="restartContainer('${c.id}')">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-                                Restart
-                            </button>
+                            <button class="m-btn m-btn-stop" onclick="stopContainer('${c.id}')">Stop</button>
+                            <button class="m-btn" onclick="restartContainer('${c.id}')">Restart</button>
                         ` : `
-                            <button class="btn btn-primary" onclick="startContainer('${c.id}')">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                                Start
-                            </button>
+                            <button class="m-btn m-btn-start" onclick="startContainer('${c.id}')">Start</button>
                         `}
-                        <button class="btn btn-ghost" onclick="viewContainerLogs('${c.id}')">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h12"/></svg>
-                            Logs
-                        </button>
-                        <button class="btn btn-ghost btn-danger-text" onclick="removeContainer('${c.id}')">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                            Remove
-                        </button>
+                        <button class="m-btn" onclick="viewContainerLogs('${c.id}')">Logs</button>
+                        <button class="m-btn m-btn-danger" onclick="removeContainer('${c.id}')">Remove</button>
                     </div>
                 </div>
             `).join('');
