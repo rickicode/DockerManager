@@ -21,7 +21,7 @@ const (
 	tsdproxyName     = "dockermanager-tsdproxy"
 	tsdproxyDataVol  = "dockermanager-tsdproxy-data"
 	tsdproxyConfVol  = "dockermanager-tsdproxy-config"
-	defaultDashPort  = 8080
+	defaultDashPort  = 8090
 )
 
 // Manager handles TSDProxy lifecycle and configuration
@@ -112,6 +112,11 @@ func (m *Manager) Deploy(ctx context.Context, cfg dmtypes.TSDProxyConfig) error 
 			},
 		},
 		Mounts: []mount.Mount{
+			{
+				Type:   mount.TypeBind,
+				Source: "/var/run/docker.sock",
+				Target: "/var/run/docker.sock",
+			},
 			{
 				Type:   mount.TypeVolume,
 				Source: tsdproxyDataVol,
