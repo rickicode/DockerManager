@@ -20,9 +20,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Mobile menu toggle
-    document.getElementById('menuToggle').addEventListener('click', () => {
-        document.querySelector('.sidebar').classList.toggle('open');
-        document.getElementById('menuToggle').classList.toggle('open');
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.querySelector('.sidebar');
+    
+    // Create backdrop element
+    const backdrop = document.createElement('div');
+    backdrop.className = 'sidebar-backdrop';
+    document.body.appendChild(backdrop);
+    
+    menuToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        backdrop.classList.toggle('visible');
+    });
+    
+    backdrop.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        backdrop.classList.remove('visible');
+    });
+    
+    // Close sidebar on nav click (mobile)
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                sidebar.classList.remove('open');
+                backdrop.classList.remove('visible');
+            }
+        });
     });
 
     // Handle hash routing
