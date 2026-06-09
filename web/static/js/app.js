@@ -228,7 +228,9 @@ async function loadDashboard() {
 
 async function loadContainers() {
     const tbody = document.getElementById('containersBody');
+    const mobileDiv = document.getElementById('containersMobile');
     tbody.innerHTML = '<tr><td colspan="6" class="loading-row">Loading...</td></tr>';
+    if (mobileDiv) mobileDiv.innerHTML = '<div class="loading-row">Loading...</div>';
 
     try {
         const all = document.getElementById('showAllContainers').checked;
@@ -237,9 +239,11 @@ async function loadContainers() {
 
         if (containers.length === 0) {
             tbody.innerHTML = '<tr><td colspan="6" class="loading-row">No containers found</td></tr>';
+            if (mobileDiv) mobileDiv.innerHTML = '<div class="empty-state">No containers found</div>';
             return;
         }
 
+        // Desktop table
         tbody.innerHTML = containers.map(c => `
             <tr>
                 <td><strong>${escapeHtml(c.name)}</strong></td>
@@ -271,8 +275,46 @@ async function loadContainers() {
                 </td>
             </tr>
         `).join('');
+
+        // Mobile cards
+        if (mobileDiv) {
+            mobileDiv.innerHTML = containers.map(c => `
+                <div class="container-card">
+                    <div class="container-card-header">
+                        <div class="container-card-name">${escapeHtml(c.name)}</div>
+                        <span class="status-badge ${c.state}">${c.state}</span>
+                    </div>
+                    <div class="container-card-body">
+                        <div class="container-card-row">
+                            <span class="container-card-label">Image</span>
+                            <span class="container-card-value">${escapeHtml(c.image)}</span>
+                        </div>
+                        ${c.ports && c.ports.length > 0 ? `
+                        <div class="container-card-row">
+                            <span class="container-card-label">Ports</span>
+                            <span class="container-card-value">${formatPorts(c.ports)}</span>
+                        </div>` : ''}
+                        <div class="container-card-row">
+                            <span class="container-card-label">Created</span>
+                            <span class="container-card-value">${formatDate(c.created)}</span>
+                        </div>
+                    </div>
+                    <div class="container-card-actions">
+                        ${c.state === 'running' ? `
+                            <button class="btn btn-sm btn-secondary" onclick="stopContainer('${c.id}')">Stop</button>
+                            <button class="btn btn-sm btn-secondary" onclick="restartContainer('${c.id}')">Restart</button>
+                        ` : `
+                            <button class="btn btn-sm btn-primary" onclick="startContainer('${c.id}')">Start</button>
+                        `}
+                        <button class="btn btn-sm btn-ghost" onclick="viewContainerLogs('${c.id}')">Logs</button>
+                        <button class="btn btn-sm btn-ghost btn-danger-text" onclick="removeContainer('${c.id}')">Remove</button>
+                    </div>
+                </div>
+            `).join('');
+        }
     } catch (err) {
         tbody.innerHTML = `<tr><td colspan="6" class="loading-row">Error: ${escapeHtml(err.message)}</td></tr>`;
+        if (mobileDiv) mobileDiv.innerHTML = `<div class="empty-state">Error: ${escapeHtml(err.message)}</div>`;
     }
 }
 

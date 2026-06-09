@@ -1001,6 +1001,10 @@ body {
    Responsive - Tablet & Mobile
    ============================================ */
 
+/* Visibility helpers */
+.desktop-only { display: block; }
+.mobile-only { display: none; }
+
 @media (max-width: 1024px) {
     .content-area {
         padding: var(--space-md);
@@ -1008,6 +1012,9 @@ body {
 }
 
 @media (max-width: 768px) {
+    .desktop-only { display: none !important; }
+    .mobile-only { display: block !important; }
+    
     /* Sidebar becomes off-canvas */
     .sidebar {
         transform: translateX(-100%);
@@ -1151,6 +1158,105 @@ body {
     .page-title {
         font-size: 14px;
     }
+}
+
+/* ============================================
+   Mobile Container Cards
+   ============================================ */
+
+.mobile-cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.container-card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.container-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-md);
+    border-bottom: 1px solid var(--border-subtle);
+    gap: var(--space-sm);
+}
+
+.container-card-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}
+
+.container-card-body {
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.container-card-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.container-card-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    flex-shrink: 0;
+}
+
+.container-card-value {
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}
+
+.container-card-actions {
+    display: flex;
+    gap: 6px;
+    padding: var(--space-sm) var(--space-md);
+    border-top: 1px solid var(--border-subtle);
+    background: var(--bg-secondary);
+    flex-wrap: wrap;
+}
+
+.container-card-actions .btn {
+    flex: 1;
+    min-width: 0;
+    justify-content: center;
+}
+
+.btn-danger-text {
+    color: var(--danger) !important;
+}
+
+.btn-danger-text:hover {
+    background: var(--danger-bg) !important;
+}
+
+.empty-state {
+    text-align: center;
+    color: var(--text-muted);
+    padding: var(--space-xl);
+    font-size: 13px;
 }
 
 /* ============================================
