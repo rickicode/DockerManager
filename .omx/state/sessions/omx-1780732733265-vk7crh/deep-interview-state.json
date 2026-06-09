@@ -1,0 +1,30 @@
+{
+  "tmux_pane_id": "%5",
+  "tmux_pane_set_at": "2026-06-06T08:00:58.521Z",
+  "active": true,
+  "mode": "deep-interview",
+  "current_phase": "intent-first",
+  "started_at": "2026-06-06T08:47:46.072Z",
+  "updated_at": "2026-06-06T09:12:43.277Z",
+  "session_id": "omx-1780732733265-vk7crh",
+  "thread_id": "019e9bf1-2eee-7763-9a7d-d3362c184ce4",
+  "turn_id": "019e9c34-a302-7b61-9ed0-15b63166038b",
+  "input_lock": {
+    "active": true,
+    "scope": "deep-interview-auto-approval",
+    "acquired_at": "2026-06-06T08:00:58.521Z",
+    "released_at": "",
+    "blocked_inputs": [
+      "yes",
+      "y",
+      "proceed",
+      "continue",
+      "ok",
+      "sure",
+      "go ahead",
+      "next i should"
+    ],
+    "message": "Deep interview is active; auto-approval shortcuts are blocked until the interview finishes.",
+    "exit_reason": ""
+  }
+}

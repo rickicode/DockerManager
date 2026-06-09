@@ -1,0 +1,93 @@
+{
+  "kind": "omx.question/v1",
+  "question_id": "question-2026-06-06T08-45-23-053Z-24a99d44",
+  "session_id": "dockermanager-readiness-20260606T075853Z",
+  "created_at": "2026-06-06T08:45:23.053Z",
+  "updated_at": "2026-06-06T08:46:39.310Z",
+  "status": "answered",
+  "header": "Round 2 | Target: non-goals / decision boundaries",
+  "question": "Untuk target production ini, apakah AI agent/chat itu requirement yang wajib ada?",
+  "options": [
+    {
+      "label": "Wajib ada",
+      "value": "required",
+      "description": "Repo harus benar-benar punya fitur AI agent/chat yang bisa berkomunikasi dan mengelola Docker."
+    },
+    {
+      "label": "Boleh belum ada",
+      "value": "optional",
+      "description": "Production tetap boleh tanpa AI agent/chat selama manajemen Docker dan UI-nya solid."
+    },
+    {
+      "label": "Bukan target",
+      "value": "out-of-scope",
+      "description": "Yang dinilai production hanya web manager Docker; AI agent/chat bukan bagian dari scope."
+    }
+  ],
+  "allow_other": false,
+  "other_label": "Other",
+  "multi_select": false,
+  "type": "single-answerable",
+  "questions": [
+    {
+      "id": "q-1",
+      "header": "Round 2 | Target: non-goals / decision boundaries",
+      "question": "Untuk target production ini, apakah AI agent/chat itu requirement yang wajib ada?",
+      "options": [
+        {
+          "label": "Wajib ada",
+          "value": "required",
+          "description": "Repo harus benar-benar punya fitur AI agent/chat yang bisa berkomunikasi dan mengelola Docker."
+        },
+        {
+          "label": "Boleh belum ada",
+          "value": "optional",
+          "description": "Production tetap boleh tanpa AI agent/chat selama manajemen Docker dan UI-nya solid."
+        },
+        {
+          "label": "Bukan target",
+          "value": "out-of-scope",
+          "description": "Yang dinilai production hanya web manager Docker; AI agent/chat bukan bagian dari scope."
+        }
+      ],
+      "allow_other": false,
+      "other_label": "Other",
+      "multi_select": false,
+      "type": "single-answerable"
+    }
+  ],
+  "source": "deep-interview",
+  "renderer": {
+    "renderer": "tmux-pane",
+    "target": "%39",
+    "launched_at": "2026-06-06T08:45:23.055Z",
+    "return_target": "%5",
+    "return_transport": "tmux-send-keys"
+  },
+  "answer": {
+    "kind": "option",
+    "value": "required",
+    "selected_labels": [
+      "Wajib ada"
+    ],
+    "selected_values": [
+      "required"
+    ]
+  },
+  "answers": [
+    {
+      "question_id": "q-1",
+      "index": 0,
+      "answer": {
+        "kind": "option",
+        "value": "required",
+        "selected_labels": [
+          "Wajib ada"
+        ],
+        "selected_values": [
+          "required"
+        ]
+      }
+    }
+  ]
+}

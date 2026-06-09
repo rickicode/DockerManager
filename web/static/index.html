@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DockerManager</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐳</text></svg>">
+</head>
+<body>
+    <div id="app">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">🐳</span>
+                    <span class="logo-text">DockerManager</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#dashboard" class="nav-item active" data-view="dashboard">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#containers" class="nav-item" data-view="containers">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9"/><path d="M4 9V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/><path d="M12 13v4"/><path d="M8 13v4"/><path d="M16 13v4"/></svg>
+                    <span>Containers</span>
+                </a>
+                <a href="#images" class="nav-item" data-view="images">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                    <span>Images</span>
+                </a>
+                <a href="#networks" class="nav-item" data-view="networks">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                    <span>Networks</span>
+                </a>
+                <a href="#compose" class="nav-item" data-view="compose">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    <span>Compose</span>
+                </a>
+                <a href="#tools" class="nav-item" data-view="tools">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                    <span>Tools</span>
+                </a>
+                <a href="#tailscale" class="nav-item" data-view="tailscale">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                    <span>Tailscale</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="connection-status" id="connectionStatus">
+                    <span class="status-dot"></span>
+                    <span>Connected</span>
+                </div>
+                <div class="version-info">v1.0.0</div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="topbar">
+                <button class="menu-toggle" id="menuToggle">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
+                <h1 class="page-title" id="pageTitle">Dashboard</h1>
+                <div class="topbar-actions">
+                    <button class="btn btn-sm btn-ghost" onclick="refreshCurrentView()" title="Refresh">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <!-- Dashboard View -->
+                <div id="view-dashboard" class="view active">
+                    <div class="stats-grid" id="statsGrid">
+                        <div class="stat-card loading">
+                            <div class="stat-label">Total Containers</div>
+                            <div class="stat-value">-</div>
+                        </div>
+                        <div class="stat-card stat-running">
+                            <div class="stat-label">Running</div>
+                            <div class="stat-value">-</div>
+                        </div>
+                        <div class="stat-card stat-paused">
+                            <div class="stat-label">Paused</div>
+                            <div class="stat-value">-</div>
+                        </div>
+                        <div class="stat-card stat-stopped">
+                            <div class="stat-label">Stopped</div>
+                            <div class="stat-value">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Images</div>
+                            <div class="stat-value">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Docker Version</div>
+                            <div class="stat-value stat-small">-</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>System Information</h2>
+                        </div>
+                        <div class="card-body" id="systemInfoBody">
+                            <div class="info-grid">
+                                <div class="info-item"><span class="info-label">OS</span><span class="info-value" id="siOS">-</span></div>
+                                <div class="info-item"><span class="info-label">Architecture</span><span class="info-value" id="siArch">-</span></div>
+                                <div class="info-item"><span class="info-label">Kernel</span><span class="info-value" id="siKernel">-</span></div>
+                                <div class="info-item"><span class="info-label">OS Type</span><span class="info-value" id="siOSType">-</span></div>
+                                <div class="info-item"><span class="info-label">API Version</span><span class="info-value" id="siAPIVersion">-</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Containers View -->
+                <div id="view-containers" class="view">
+                    <div class="view-toolbar">
+                        <button class="btn btn-primary" onclick="showCreateContainerModal()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            Create Container
+                        </button>
+                        <div class="filter-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="showAllContainers" onchange="loadContainers()">
+                                <span>Show all</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table class="table" id="containersTable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Image</th>
+                                    <th>Status</th>
+                                    <th>Ports</th>
+                                    <th>Created</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="containersBody">
+                                <tr><td colspan="6" class="loading-row">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Images View -->
+                <div id="view-images" class="view">
+                    <div class="view-toolbar">
+                        <button class="btn btn-primary" onclick="showPullImageModal()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Pull Image
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table class="table" id="imagesTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Repository</th>
+                                    <th>Tag</th>
+                                    <th>Size</th>
+                                    <th>Created</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="imagesBody">
+                                <tr><td colspan="6" class="loading-row">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Networks View -->
+                <div id="view-networks" class="view">
+                    <div class="view-toolbar">
+                        <button class="btn btn-primary" onclick="showCreateNetworkModal()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            Create Network
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table class="table" id="networksTable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Driver</th>
+                                    <th>Scope</th>
+                                    <th>Subnet</th>
+                                    <th>Gateway</th>
+                                    <th>Containers</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="networksBody">
+                                <tr><td colspan="7" class="loading-row">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Compose View -->
+                <div id="view-compose" class="view">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Docker Compose Deploy</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="composeProjectName">Project Name</label>
+                                <input type="text" id="composeProjectName" class="input" placeholder="my-project">
+                            </div>
+                            <div class="form-group">
+                                <label for="composeYaml">docker-compose.yml</label>
+                                <textarea id="composeYaml" class="textarea" rows="12" placeholder="version: '3'
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - &quot;8080:80&quot;"></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button class="btn btn-primary" onclick="deployCompose()">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                    Deploy
+                                </button>
+                                <button class="btn btn-secondary" onclick="parseCompose()">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                                    Validate
+                                </button>
+                            </div>
+                            <div id="composeResult" class="result-box" style="display:none"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tools View -->
+                <div id="view-tools" class="view">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Port Checker</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="form-group flex-1">
+                                    <label for="portCheckHost">Host</label>
+                                    <input type="text" id="portCheckHost" class="input" value="localhost" placeholder="hostname or IP">
+                                </div>
+                                <div class="form-group port-input">
+                                    <label for="portCheckPort">Port</label>
+                                    <input type="number" id="portCheckPort" class="input" value="80" min="1" max="65535" placeholder="port">
+                                </div>
+                                <div class="form-group btn-group">
+                                    <label>&nbsp;</label>
+                                    <button class="btn btn-primary" onclick="checkPort()">Check</button>
+                                </div>
+                            </div>
+                            <div id="portCheckResult" class="result-box" style="display:none"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tailscale View -->
+                <div id="view-tailscale" class="view">
+                    <!-- Status Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>TSDProxy Status</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 16px;">
+                                <div class="stat-card" id="tsdStatusCard">
+                                    <div class="stat-label">Status</div>
+                                    <div class="stat-value" id="tsdStatus">-</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-label">Container</div>
+                                    <div class="stat-value stat-small" id="tsdContainerId">-</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-label">Dashboard Port</div>
+                                    <div class="stat-value" id="tsdPort">-</div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button class="btn btn-primary" onclick="showDeployTSDProxyModal()">Deploy TSDProxy</button>
+                                <button class="btn btn-secondary" onclick="tsdproxyAction('start')">Start</button>
+                                <button class="btn btn-secondary" onclick="tsdproxyAction('stop')">Stop</button>
+                                <button class="btn btn-secondary" onclick="tsdproxyAction('restart')">Restart</button>
+                                <button class="btn btn-danger" onclick="tsdproxyRemove()">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Config Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>TSDProxy Configuration</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-grid">
+                                <div class="full-width">
+                                    <div class="form-group">
+                                        <label>Tailscale OAuth Client ID</label>
+                                        <input type="text" id="tsdClientId" class="input" placeholder="tsclient_...">
+                                    </div>
+                                </div>
+                                <div class="full-width">
+                                    <div class="form-group">
+                                        <label>Tailscale OAuth Client Secret</label>
+                                        <input type="password" id="tsdClientSecret" class="input" placeholder="...">
+                                    </div>
+                                </div>
+                                <div class="form-group flex-1">
+                                    <label>Tags</label>
+                                    <input type="text" id="tsdTags" class="input" value="tag:tsdproxy" placeholder="tag:tsdproxy">
+                                </div>
+                                <div class="form-group flex-1">
+                                    <label>Hostname</label>
+                                    <input type="text" id="tsdHostname" class="input" value="tsdproxy" placeholder="tsdproxy">
+                                </div>
+                                <div class="form-group flex-1">
+                                    <label>Dashboard Port</label>
+                                    <input type="number" id="tsdDashPort" class="input" value="8080" min="1" max="65535">
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button class="btn btn-primary" onclick="saveTSDProxyConfig()">Save Config</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Proxied Services Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Proxied Services</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table class="table" id="tsdServicesTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Container</th>
+                                            <th>Image</th>
+                                            <th>Hostname</th>
+                                            <th>Funnel</th>
+                                            <th>State</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tsdServicesBody">
+                                        <tr><td colspan="6" class="loading-row">Loading...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="modalOverlay" class="modal-overlay" style="display:none" onclick="closeModal()">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3 id="modalTitle">Modal</h3>
+                <button class="btn-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Loader -->
+    <div id="loader" class="loader-overlay" style="display:none">
+        <div class="loader"></div>
+    </div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>

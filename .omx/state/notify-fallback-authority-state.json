@@ -1,0 +1,13 @@
+{
+  "owner": "hud",
+  "pid": 1926355,
+  "cwd": "/workspaces/DockerManager",
+  "heartbeat_at": "2026-06-06T09:13:16.471Z",
+  "cooldown_ms": 5000,
+  "jitter_ms": 61,
+  "skip_count": 3705,
+  "last_status": "spawned",
+  "last_reason": "spawned",
+  "last_spawn_at": "2026-06-06T09:13:16.471Z",
+  "next_allowed_at": "2026-06-06T09:13:21.532Z"
+}

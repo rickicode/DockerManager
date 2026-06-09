@@ -1,0 +1,10 @@
+{
+  "session_id": "omx-1780732733265-vk7crh",
+  "native_session_id": "019e9bf1-2eee-7763-9a7d-d3362c184ce4",
+  "started_at": "2026-06-06T07:58:53.998Z",
+  "cwd": "/workspaces/DockerManager",
+  "pid": 1926448,
+  "platform": "linux",
+  "pid_start_ticks": 7222965,
+  "pid_cmdline": "/home/ricki/.nvm/versions/node/v24.16.0/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/bin/codex --yolo -c model_instructions_file=\"/workspaces/DockerManager/.omx/state/sessions/omx-1780732733265-vk7crh/AGENTS.md\""
+}

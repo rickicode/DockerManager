@@ -1,0 +1,93 @@
+{
+  "kind": "omx.question/v1",
+  "question_id": "question-2026-06-06T08-03-01-581Z-8d10eb25",
+  "session_id": "dockermanager-readiness-20260606T075853Z",
+  "created_at": "2026-06-06T08:03:01.581Z",
+  "updated_at": "2026-06-06T08:44:56.414Z",
+  "status": "answered",
+  "header": "Round 1 | Target: decision boundaries",
+  "question": "Untuk menilai apakah repo ini 'siap digunakan', bar yang Anda maksud yang mana?",
+  "options": [
+    {
+      "label": "Demo / internal",
+      "value": "demo-internal",
+      "description": "Cukup jalan untuk dicoba tim sendiri atau dipresentasikan sederhana."
+    },
+    {
+      "label": "Pemakaian harian",
+      "value": "daily-use",
+      "description": "Harus stabil untuk dipakai rutin oleh user internal."
+    },
+    {
+      "label": "Production",
+      "value": "production",
+      "description": "Harus siap aman, stabil, dan layak dipakai di lingkungan produksi."
+    }
+  ],
+  "allow_other": false,
+  "other_label": "Other",
+  "multi_select": false,
+  "type": "single-answerable",
+  "questions": [
+    {
+      "id": "q-1",
+      "header": "Round 1 | Target: decision boundaries",
+      "question": "Untuk menilai apakah repo ini 'siap digunakan', bar yang Anda maksud yang mana?",
+      "options": [
+        {
+          "label": "Demo / internal",
+          "value": "demo-internal",
+          "description": "Cukup jalan untuk dicoba tim sendiri atau dipresentasikan sederhana."
+        },
+        {
+          "label": "Pemakaian harian",
+          "value": "daily-use",
+          "description": "Harus stabil untuk dipakai rutin oleh user internal."
+        },
+        {
+          "label": "Production",
+          "value": "production",
+          "description": "Harus siap aman, stabil, dan layak dipakai di lingkungan produksi."
+        }
+      ],
+      "allow_other": false,
+      "other_label": "Other",
+      "multi_select": false,
+      "type": "single-answerable"
+    }
+  ],
+  "source": "deep-interview",
+  "renderer": {
+    "renderer": "tmux-pane",
+    "target": "%38",
+    "launched_at": "2026-06-06T08:03:01.584Z",
+    "return_target": "%5",
+    "return_transport": "tmux-send-keys"
+  },
+  "answer": {
+    "kind": "option",
+    "value": "production",
+    "selected_labels": [
+      "Production"
+    ],
+    "selected_values": [
+      "production"
+    ]
+  },
+  "answers": [
+    {
+      "question_id": "q-1",
+      "index": 0,
+      "answer": {
+        "kind": "option",
+        "value": "production",
+        "selected_labels": [
+          "Production"
+        ],
+        "selected_values": [
+          "production"
+        ]
+      }
+    }
+  ]
+}

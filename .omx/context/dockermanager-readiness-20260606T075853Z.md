@@ -1,0 +1,33 @@
+# Context Snapshot — dockermanager-readiness
+
+- Task statement: assess whether this repo is ready to use, whether it can manage Docker, whether UI/UX exists, and how AI agent communication works.
+- Desired outcome: concise readiness assessment with evidence, gaps, and the answer to whether AI agent communication is implemented.
+- Stated solution: review the existing brownfield repo rather than implement changes.
+- Probable intent hypothesis: the user wants a go/no-go assessment before using or presenting the tool.
+- Known facts/evidence:
+  - Go backend serves embedded static web UI from `web/static`.
+  - API routes exist for system info, port check, containers, images, networks, compose parse/deploy.
+  - Frontend HTML/CSS/JS exists with dashboard, containers, images, networks, compose, tools views.
+  - No obvious AI/agent/LLM/chat/websocket/SSE code found in repo.
+  - `go.mod` shows Docker and Gin dependencies; `main.go` binds to Docker daemon on startup.
+- Constraints:
+  - No repo README or dedicated docs were present in the root.
+  - Need evidence-backed assessment, not assumptions.
+- Unknowns/open questions:
+  - Whether the UI is complete enough for intended usage or just a starter admin panel.
+  - Whether tests/build succeed and whether the app actually runs in this environment.
+  - Whether any agent communication exists outside source code (none found yet).
+- Decision-boundary unknowns:
+  - What level of "ready" the user wants (MVP, production, demo, internal use).
+- Likely codebase touchpoints:
+  - `main.go`
+  - `internal/api/*`
+  - `internal/docker/*`
+  - `internal/types/types.go`
+  - `web/static/index.html`, `web/static/css/style.css`, `web/static/js/app.js`
+  - `Makefile`, `installer.sh`
+- Relevant repo docs/rules/context inspected:
+  - Root repo files and `.omx/` state; no README/docs found in root.
+- Terminology or doc/code conflicts found:
+  - User asked about "AI agent communication" but repo currently appears to expose only HTTP JSON APIs and a static frontend.
+- Prompt-safe initial-context summary status: not needed.
