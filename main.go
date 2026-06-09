@@ -23,7 +23,7 @@ var staticFiles embed.FS
 
 func main() {
 	host := flag.String("host", "0.0.0.0", "Host address to bind to")
-	port := flag.Int("port", 8080, "Port to listen on")
+	port := flag.Int("port", 8091, "Port to listen on")
 	showVersion := flag.Bool("version", false, "Show version information")
 	flag.Parse()
 
